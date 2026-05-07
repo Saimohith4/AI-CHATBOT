@@ -5,11 +5,15 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 excel_path = os.path.join(BASE_DIR, 'survey.xlsx')
 
 try:
-    df = pd.read_excel(excel_path)
+    df = pd.read_excel(excel_path, engine='openpyxl')
     df.columns = df.columns.str.strip()
+
+    print(df.head())
+    print(df.columns)
     print("Dataset Loaded Successfully")
 except Exception as e:
-    print("Error loading dataset:", e)
+    import traceback
+    traceback.print_exc()
     df = pd.DataFrame()
 
 
