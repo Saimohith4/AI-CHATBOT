@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<title>Marketing Assistant</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="header">
+🤖Marketing Assistant
+</div>
+
+<div id="chatbox"></div>
+
+<div class="input-area">
+
+<input id="message" placeholder="Search customers by product (Laptop, Shoes, etc)">
+<button onclick="sendMessage()">Send</button>
+
+</div>
+
+</div>
+
+<script>
+
+function sendMessage(){
+
+let message = document.getElementById("message").value
+
+if(message.trim() === "") return
+
+let chatbox = document.getElementById("chatbox")
+
+chatbox.innerHTML +=
+`<div class="user">${message}</div>`
+
+chatbox.innerHTML +=
+`<div class="loader" id="loading"></div>`
+
+fetch("/chat",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({message:message})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+document.getElementById("loading").remove()
+
+chatbox.innerHTML +=
+`<div class="bot">${data.reply}</div>`
+
+document.getElementById("message").value=""
+
+chatbox.scrollTop = chatbox.scrollHeight
+
+})
+
+}
+
+</script>
+</body>
+</html>
